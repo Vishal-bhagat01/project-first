@@ -1,10 +1,4 @@
-// import React from 'react';
 
-// const Login = () => {
-//   return <h1 className="text-3xl font-bold">Login to Your Account</h1>;
-// };
-
-// export default Login;
 import React from 'react'
 
 function Student() {
