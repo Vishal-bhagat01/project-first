@@ -7,13 +7,16 @@ import Home from './components/Home';
 import Teacher from './components/Teacher';
 import Result from './components/Result';
 import Student from './components/Student';
+
 import Login from './components/Login';
 import { Toaster } from 'react-hot-toast'; 
+import { StudentProvider } from './Context/studentContext';
 
 function App() {
   return (
     <AuthProvider>
       <Toaster position="top-right" /> 
+     
       <Main />
     </AuthProvider>
   );
@@ -24,6 +27,7 @@ const Main = () => {
 
   return (
     <BrowserRouter>
+    <StudentProvider>
       {isAuthenticated && <Navbar />}
       <div className="container mx-auto p-4">
         <Routes>
@@ -40,6 +44,7 @@ const Main = () => {
           )}
         </Routes>
       </div>
+      </StudentProvider>
     </BrowserRouter>
   );
 };
