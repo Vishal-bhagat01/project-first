@@ -1,5 +1,9 @@
+
+
 import React, { createContext, useState, useEffect } from 'react';
+
 export const StudentContext = createContext();
+
 export const StudentProvider = ({ children }) => {
   const initialData = JSON.parse(localStorage.getItem('students')) || [];
   const [students, setStudents] = useState(initialData);
@@ -16,9 +20,27 @@ export const StudentProvider = ({ children }) => {
     setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
   };
 
+  const updateStudent = (updatedStudent) => {
+    setStudents((prevStudents) =>
+      prevStudents.map((student) =>
+        student.id === updatedStudent.id ? updatedStudent : student
+      )
+    );
+  };
+
   return (
-    <StudentContext.Provider value={{ students, addStudent, deleteStudent }}>
+    <StudentContext.Provider value={{ students, addStudent, deleteStudent, updateStudent }}>
       {children}
     </StudentContext.Provider>
   );
 };
+
+
+
+
+
+
+
+
+
+

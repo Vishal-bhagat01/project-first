@@ -8,7 +8,12 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login ,isAuthenticated} = useAuth();
+
+  if (isAuthenticated) {
+    navigate('/'); 
+    return null; 
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,6 +25,7 @@ const Login = () => {
       setError('Invalid username or password');
     }
   };
+
 
   return (
     
@@ -71,6 +77,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
