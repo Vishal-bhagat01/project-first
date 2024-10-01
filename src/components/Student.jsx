@@ -1,8 +1,7 @@
 
-
 import React, { useContext, useState } from 'react';
 import { StudentContext } from '../Context/studentContext';
-import StudentTable from './StudentTable';
+import DynamicTable from './DynamicTable';
 
 const Student = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,25 +16,24 @@ const Student = () => {
   const [stream, setStream] = useState('');
   const [gender, setGender] = useState('');
   const [filter, setFilter] = useState('');
-  const [selectedColumns, setSelectedColumns] = useState(['id', 'name', 'email', 'stream', 'gender']);
   const { students, addStudent, deleteStudent, updateStudent } = useContext(StudentContext);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const studentsPerPage = 5;
-  const totalPages = Math.ceil(students.length / studentsPerPage);
 
-  const getNextStudentID = () => {
-    const maxId = students.reduce((max, student) => Math.max(max, student.id), 0);
-    return maxId + 1;
-  };
+  const studentFields = [
+    { key: 'id', label: 'STUDENT_ID' },
+    { key: 'name', label: 'STUDENT_NAME' },
+    { key: 'email', label: 'STUDENT_EMAIL' },
+    { key: 'stream', label: 'STREAM' },
+    { key: 'gender', label: 'GENDER' },
+  ];
 
+ 
   const handleAddStudent = (e) => {
     e.preventDefault();
-    const studentID = getNextStudentID();
+    const studentID = students.length + 1; 
     addStudent({ id: studentID, name: studentName, email: studentEmail, dob, age, phoneNumber, stream, gender });
     setIsModalOpen(false);
     resetForm();
-    setCurrentPage(1);
   };
 
   const handleViewStudent = (student) => {
@@ -81,27 +79,9 @@ const Student = () => {
     setGender('');
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleColumnToggle = (column) => {
-    setSelectedColumns(prevColumns =>
-      prevColumns.includes(column) ? prevColumns.filter(col => col !== column) : [...prevColumns, column]
-    );
-  };
-
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-4xl underline underline-offset-8 font-bold mb-4 text-center">Students List</h1>
+    <div className="container mx-auto p-6 border-x-fuchsia-600">
+      <h1 className="text-4xl underline font-bold mb-4 text-center">Students List</h1>
 
       <div className="flex justify-end mb-4">
         <button
@@ -112,60 +92,35 @@ const Student = () => {
         </button>
       </div>
 
-      
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Search by name..."
+          placeholder="Search name..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
 
-       {/* Column Selection */}
-       {/* <div className="mb-4">
-        <h3 className="font-semibold mb-2">Select Columns to Display:</h3>
-        <div className="flex flex-wrap gap-4">
-          {['id', 'name', 'email', 'stream', 'gender'].map(column => (
-            <label key={column} className="flex items-center">
-              <input
-                type="checkbox"
-                checked={selectedColumns.includes(column)}
-                onChange={() => handleColumnToggle(column)}
-                className="mr-2"
-              />
-              {column.charAt(0).toUpperCase() + column.slice(1)}
-            </label>
-          ))}
-        </div> */}
-      {/* </div>   */}
-
-      {/* Student Table */}
-      <StudentTable
+      {/* Dynamic Table with student data */}
+      
+      <DynamicTable
         students={students}
+        fields={studentFields}
         filter={filter}
-        selectedColumns={selectedColumns}
-        handleViewStudent={handleViewStudent}
-        handleEditStudent={handleEditStudent}
-        deleteStudent={deleteStudent}
-        currentPage={currentPage}
-        studentsPerPage={studentsPerPage}
-        totalPages={totalPages}
-        handlePrevPage={handlePrevPage}
-        handleNextPage={handleNextPage}
+        handleView={handleViewStudent}
+        handleEdit={handleEditStudent}
+        handleDelete={deleteStudent}
       />
 
-      {/* Modal Components (Add, View, Edit) */}
-      {/* Add Student Modal */}
-    
+      {/* Add, View, Edit modals here */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-gradient-to-r from-blue-200 to-purple-200 hover:bg-purple-300 transition duration-200 rounded-lg shadow-lg p-8 ml-14 w-2/4">
             <h2 className="text-2xl font-bold mb-4">Add New Student</h2>
             <form className="flex flex-wrap gap-3" onSubmit={handleAddStudent}>
               <div className="mb-4">
-                <label htmlFor="studentName" className="block text-gray-800 font-semibold">Student Name</label>
+                <label htmlFor="Student_Name" className="block text-gray-800 font-semibold">Student Name</label>
                 <input
                   type="text"
                   id="studentName"
@@ -312,9 +267,9 @@ const Student = () => {
           </div>
         </div>
       )}
-    
 
-      {/* Edit Student Modal */}
+
+      {/* Edit Student Modal */}  
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-gradient-to-r from-blue-200 to-purple-200 hover:bg-purple-300 transition duration-200 rounded-lg shadow-lg p-8 w-2/4">
@@ -426,17 +381,13 @@ const Student = () => {
         </div>
       )}
 
+
     </div>
+
   );
 };
 
 export default Student;
-
-
-
-
-
-
 
 
 
