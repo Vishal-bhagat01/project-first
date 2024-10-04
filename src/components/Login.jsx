@@ -22,7 +22,7 @@ const Login = () => {
       login(); 
       navigate('/'); 
     } else {
-      setError('Invalid username or password');
+      setError('Invalid username or password ');
     }
   };
 
@@ -30,7 +30,7 @@ const Login = () => {
   return (
     
     <div className="min-h-screen flex items-center justify-center">
-      <div className="border-l-gray-300 bg-clip-padding   border-4 border-violet-300 border-dashed p-8 rounded-3xl shadow-xl w-full max-w-lg transform transition duration-500 hover:scale-105 backdrop-blur-lg">
+      <div className="border-l-gray-300 bg-clip-padding   border-4 border-violet-300 border-dashed p-8 rounded-3xl shadow-xl w-full max-w-lg transform transition duration-500 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ">
         <div className="text-center mb-6">
           <img 
             src="public/logo.png" 

@@ -9,7 +9,7 @@ const DynamicTable = ({ students, fields, filter, handleView, handleEdit, handle
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
 
   const currentRows = students
-    .filter(row => row.name.toLowerCase().includes(filter.toLowerCase()))
+    .filter((row) => row.name.toLowerCase().includes(filter.toLowerCase()))
     .slice(indexOfFirstRow, indexOfLastRow);
 
   const totalPages = Math.ceil(students.length / rowsPerPage);
@@ -38,40 +38,52 @@ const DynamicTable = ({ students, fields, filter, handleView, handleEdit, handle
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full table-auto border-collapse shadow-md rounded-lg overflow-hidden">
+      <table className="min-w-full table-auto border-collapse shadow-lg rounded-lg overflow-hidden bg-white">
         <thead>
-          <tr className="bg-gray-100 text-left">
+          <tr className="bg-gradient-to-r from-blue-500 to-purple-500 hover:bg-purple-600 transition duration-200 text-white ">
             {fields.map((column) => (
-              <th key={column.key} className="px-6 py-3 border-b-2 border-gray-300 text-gray-700 font-semibold text-center">
+              <th
+                key={column.key}
+                className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border-b border-gray-300"
+              >
                 {column.label}
               </th>
             ))}
-            <th className="px-6 py-3 border-b-2 border-gray-300 text-gray-700 font-semibold text-center">ACTION</th>
+            <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border-b border-gray-300">
+              Action
+            </th>
           </tr>
         </thead>
-        <tbody className="bg-white">
+        <tbody className="bg-white divide-y divide-gray-200">
           {currentRows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50 transition">
+            <tr key={row.id} className="hover:bg-gray-50 transition duration-150">
               {fields.map((column) => (
-                <td key={column.key} className="px-6 py-4 border-b border-gray-200 text-center">
+                <td
+                  key={column.key}
+                  className={`px-6 py-4 font-semibold text-gray-800 text-center border-b border-gray-300 ${
+                    ['studentid', 'studentname', 'email', 'dept'].includes(column.key)
+                      ? 'hover:text-blue-500 transition duration-150 cursor-pointer'
+                      : ''
+                  }`}
+                >
                   {row[column.key]}
                 </td>
               ))}
-              <td className="px-6 py-4 border-b border-gray-200 text-center">
+              <td className="px-6 py-4 border-b border-gray-300 text-center space-x-2">
                 <button
-                  className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition duration-200 mr-2"
+                  className="bg-blue-500 text-white px-2 py-1 rounded-full shadow-md hover:bg-blue-600 transition duration-200"
                   onClick={() => handleView(row)}
                 >
                   View
                 </button>
                 <button
-                  className="bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition duration-200 mr-2"
+                  className="bg-green-500 text-white px-2 py-1 rounded-full shadow-md hover:bg-green-600 transition duration-200"
                   onClick={() => handleEdit(row)}
                 >
                   Edit
                 </button>
                 <button
-                  className="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition duration-200"
+                  className="bg-red-500 text-white px-2 py-1 rounded-full shadow-md hover:bg-red-600 transition duration-200"
                   onClick={() => handleDelete(row.id)}
                 >
                   Delete
@@ -83,23 +95,25 @@ const DynamicTable = ({ students, fields, filter, handleView, handleEdit, handle
       </table>
 
       {students.length > rowsPerPage && (
-        <div className="flex items-center justify-center mt-4">
+        <div className="flex items-center justify-center mt-6 space-x-2">
           <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 disabled:opacity-50"
+            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 disabled:opacity-50 transition"
           >
             Previous
           </button>
 
-          <div className="mx-4">
+          <div className="flex space-x-1">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
                 onClick={() => handlePageClick(index + 1)}
-                className={`px-4 py-2 rounded-full mx-1 ${
-                  currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-                }`}
+                className={`px-4 py-2 rounded-full shadow-md ${
+                  currentPage === index + 1
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                } transition duration-150`}
               >
                 {index + 1}
               </button>
@@ -109,7 +123,7 @@ const DynamicTable = ({ students, fields, filter, handleView, handleEdit, handle
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 disabled:opacity-50"
+            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 disabled:opacity-50 transition"
           >
             Next
           </button>
@@ -120,12 +134,6 @@ const DynamicTable = ({ students, fields, filter, handleView, handleEdit, handle
 };
 
 export default DynamicTable;
-
-
-
-
-
-
 
 
 
